@@ -1,6 +1,6 @@
 import React from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { removeItem, updateQuantity } from './CartSlice';
+import { addItem, removeItem, updateQuantity } from './CartSlice';
 import './CartItem.css';
 
 const CartItem = ({ onContinueShopping }) => {
@@ -9,24 +9,13 @@ const CartItem = ({ onContinueShopping }) => {
 
   // Calculate total amount for all products in the cart
   const calculateTotalAmount = (cart) => {
-    // Initialize a variable total to hold the cumulative sum
     let total = 0;
-    
-    // Iterate over the cart array using cart.forEach()
     cart.forEach((item) => {
-      // For each item, extract its quantity and cost
       const { quantity, cost } = item;
-      
-      // Convert the cost string (e.g., "$10.00") to a number using parseFloat(item.cost.substring(1))
-      // then multiply it by the quantity
       const numericCost = parseFloat(cost.substring(1));
       const itemTotal = numericCost * quantity;
-      
-      // Add the resulting value to total
       total += itemTotal;
     });
-    
-    // After processing all items, return the final total sum
     return total;
   };
 
@@ -40,7 +29,6 @@ const CartItem = ({ onContinueShopping }) => {
   };
 
   const handleIncrement = (item) => {
-    // Dispatch the updateQuantity action to increase the item's quantity by 1
     dispatch(updateQuantity({ 
       name: item.name, 
       quantity: item.quantity + 1 
@@ -48,21 +36,20 @@ const CartItem = ({ onContinueShopping }) => {
   };
 
   const handleDecrement = (item) => {
-    // Check if the item's quantity is greater than 1
     if (item.quantity > 1) {
-      // If quantity > 1, dispatch updateQuantity to decrease the quantity by 1
+      // Use updateQuantity action to change how many items are in cart
       dispatch(updateQuantity({ 
         name: item.name, 
         quantity: item.quantity - 1 
       }));
     } else {
-      // If quantity would drop to 0, dispatch the removeItem action to remove the plant from the cart
+      // Use removeItem action to delete item completely from cart
       dispatch(removeItem(item.name));
     }
   };
 
   const handleRemove = (item) => {
-    // Dispatch the removeItem action to delete the item from the cart
+    // Use removeItem action to delete an item completely from the cart
     dispatch(removeItem(item.name));
   };
 
